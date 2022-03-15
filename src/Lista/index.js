@@ -1,28 +1,20 @@
 import React, { Component } from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
-class Lista extends Component{
+function Lista(props) {
 
-  constructor(props){
-    super(props);
-    this.state = { 
-      feed: this.props.data
-    };
 
-    this.carregaIcone = this.carregaIcone.bind(this);
-    this.mostraLikes = this.mostraLikes.bind(this);
-    this.like = this.like.bind(this);
-  }
+  const [feed, setFeed] = setState(props.data);
+  
 
-  carregaIcone(likeada){
+  function carregaIcone(likeada){
     return likeada ? require('../img/likeada.png') : require('../img/like.png');
-  }
+  };
 
-  like(){
-    let feed = this.state.feed;
+  function like(){
 
     if(feed.likeada === true){
-      this.setState({
+      setFeed({
         feed:{
           ...feed, /// operador spread para nao 'setar' o state apenas para essas duas curtidas, mas sim, deixar o que ja estava, padrão e mudar apenas o 'likeada' e os 'likers'.
           likeada: false,
@@ -30,7 +22,7 @@ class Lista extends Component{
         }
       })
     }else{
-      this.setState({
+      setFeed({
         feed:{
           ...feed,
           likeada: true,
@@ -40,8 +32,8 @@ class Lista extends Component{
     }
   }
 
-  mostraLikes(likers){
-    let feed = this.state.feed;
+  function mostraLikes(likers){
+    
 
     if(feed.likers <= 0){
       return;
@@ -54,31 +46,29 @@ class Lista extends Component{
     )
     
   }
-
-  render(){
     return(
       <View style={styles.areaFeed}>
 
         <View style={styles.viewPerfil}>
           <Image 
-            source={{uri: this.state.feed.imgperfil}}
+            source={{uri: feed.imgperfil}}
             style={styles.fotoPerfil}
           />
 
-          <Text style={styles.nomeUsuario}> {this.state.feed.nome} </Text>
+          <Text style={styles.nomeUsuario}> {feed.nome} </Text>
 
         </View>
 
         <Image
         resizeMode='cover'
         style={styles.fotoPublicacao}
-        source={{uri: this.state.feed.imgPublicacao}}
+        source={{uri: feed.imgPublicacao}}
         />
 
         <View style={styles.areaBtn}>
-          <TouchableOpacity onPress={this.like}>
+          <TouchableOpacity onPress={like}>
             <Image
-            source={this.carregaIcone(this.state.feed.likeada)}
+            source={carregaIcone(feed.likeada)}
             style={styles.iconeLike}
             />
           </TouchableOpacity>
@@ -91,23 +81,22 @@ class Lista extends Component{
           </TouchableOpacity>
         </View>
         
-        {this.mostraLikes(this.state.feed.likers)}
+        {mostraLikes(feed.likers)}
 
         <View style={styles.viewRodape}>
           <Text style={styles.nomeRodape}>
-            {this.state.feed.nome}
+            {feed.nome}
           </Text>
 
           <Text style={styles.descRodape}>
-            {this.state.feed.descricao}
+            {feed.descricao}
           </Text>
         </View>
 
       </View>
     );
-  }
-}
 
+}
 
 const styles = StyleSheet.create({
   areaFeed:{
